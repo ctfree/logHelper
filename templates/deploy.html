@@ -1,0 +1,27 @@
+$def with(f,links)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>log</title>
+</head>
+<body>
+<div class="container" float="">
+    <!-- Static navbar -->
+    <div class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav" id="menu">
+            <li><a href="/">index</a></li>
+            $for i in range(len(links)/2):
+                $if links[i*2] != '/':
+                    <li><a href="$links[i*2]">$links[i*2][1:]</a></li>
+        </ul>
+    </div>
+    <div class="jumbotron">
+        <form method="POST">
+            $:f.render()
+        </form>
+    </div>
+</div>
+<!-- /container -->
+
+</body>
+</html>

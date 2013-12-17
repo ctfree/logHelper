@@ -1,0 +1,116 @@
+$def with(f,datas,links)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>log</title>
+    <style type="text/css" media="screen">
+        <!--
+        /* PR-CSS */
+        table {
+            border-collapse: collapse;
+            border: solid #999;
+            border-width: 1px 0 0 1px;
+        }
+
+        table td {
+            border: solid #999;
+            border-width: 0 1px 1px 0;
+        }
+
+        tr.t1 td {
+            background-color: #fff;
+        }
+
+        /* 第一行的背景色 */
+        tr.t2 td {
+            background-color: #eee;
+        }
+
+        /* 第二行的背景色 */
+        tr.t3 td {
+            background-color: #ccc;
+        }
+
+        /* 鼠标经过时的背景色 */
+        -->
+        #menu {
+            list-style: none;
+            overflow: auto;
+            margin: 0;
+            padding: 0;
+            zoom: 1;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        #menu li {
+            line-height: 20px;
+            margin: 5px 4px;
+            border: 1px solid silver;
+            text-align: center;
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+<div class="container" float="">
+    <!-- Static navbar -->
+    <div class="navbar navbar-default" role="navigation">
+        <ul class="nav navbar-nav" id="menu">
+            <li><a href="/">index</a></li>
+            $for i in range(len(links)/2):
+                $if links[i*2] != '/':
+                    <li><a href="$links[i*2]">$links[i*2][1:]</a></li>
+        </ul>
+    </div>
+    <div class="jumbotron">
+        <form method="POST">
+            $:f.render()
+        </form>
+        <table id="tab">
+            $for data in datas:
+            <tr>
+                <td>$:data.replace('\n','<br/>')<br/></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- /container -->
+<script type="text/javascript">
+    var Ptr = document.getElementById("tab").getElementsByTagName("tr");
+    function load() {
+        for (i = 1; i < Ptr.length + 1; i++) {
+            Ptr[i - 1].className = (i % 2 > 0) ? "t1" : "t2";
+        }
+    }
+    function postData(str) {
+        var myForm = document.createElement("form");
+        myForm.method = "post";
+        myForm.action = "test";
+
+        var myInput = document.createElement("input");
+        myInput.type = "text";
+        myInput.name = "trace";
+        myInput.value = str;
+        myForm.appendChild(myInput)
+
+        document.body.appendChild(myForm);
+        myForm.submit();
+        document.body.removeChild(myForm);
+    }
+    window.onload = load;
+    for (var i = 0; i < Ptr.length; i++) {
+        Ptr[i].onmouseover = function () {
+            this.tmpClass = this.className;
+            this.className = "t3";
+        };
+        Ptr[i].onmouseout = function () {
+            this.className = this.tmpClass;
+        };
+        Ptr[i].ondblclick =  function () {
+            postData(this.getElementsByTagName("td")[0].innerHTML);
+        };
+    }
+</script>
+</body>
+</html>

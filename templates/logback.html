@@ -1,0 +1,107 @@
+$def with(f,datas,links)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>log</title>
+    <style type="text/css" media="screen">
+        <!--
+        /* PR-CSS */
+        table {
+            border-collapse: collapse;
+            border: solid #999;
+            border-width: 1px 0 0 1px;
+        }
+
+        table td {
+            border: solid #999;
+            border-width: 0 1px 1px 0;
+        }
+
+        tr.t1 td {
+            background-color: #fff;
+        }
+
+        /* 第一行的背景色 */
+        tr.t2 td {
+            background-color: #eee;
+        }
+
+        /* 第二行的背景色 */
+        tr.t3 td {
+            background-color: #ccc;
+        }
+
+        /* 鼠标经过时的背景色 */
+        -->
+    </style>
+    <!-- Le styles -->
+    <link href="$config.static/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Static navbar -->
+    <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">logHelper</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                $for i in range(len(links)/2):
+                <li><a href="$links[i*2]">$links[i*2][1:]</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+    <div class="jumbotron">
+        <form method="POST">
+            $:f.render()
+        </form>
+        <table id="tab">
+            $for data in datas:
+            <tr>
+                <td>$:data.replace('\n','<br/>')<br/></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- /container -->
+<script type="text/javascript">
+    var Ptr = document.getElementById("tab").getElementsByTagName("tr");
+    function load() {
+        for (i = 1; i < Ptr.length + 1; i++) {
+            Ptr[i - 1].className = (i % 2 > 0) ? "t1" : "t2";
+        }
+    }
+    window.onload = load;
+    for (var i = 0; i < Ptr.length; i++) {
+        Ptr[i].onmouseover = function () {
+            this.tmpClass = this.className;
+            this.className = "t3";
+        };
+        Ptr[i].onmouseout = function () {
+            this.className = this.tmpClass;
+        };
+    }
+</script>
+<script src="$config.static/js/jquery-1.10.2.min.js"></script>
+<script src="$config.static/js/bootstrap.min.js"></script>
+</body>
+</html>
